@@ -1,0 +1,5 @@
+Flask
+peewee
+beautifulsoup4
+lxml
+psycopg2
