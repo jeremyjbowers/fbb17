@@ -11,13 +11,15 @@ def decorate_yahoo(p):
     )
     soup = BeautifulSoup(r.content, 'lxml')
     players = soup.select('div.players-table div.ysf-player-name')
+    print(len(players))
     for div in players:
         if div.select('a')[0].attrs['href'] == 'https://sports.yahoo.com/mlb/players/%s' % p.yahoo_id:
             position = div.select('span.Fz-xxs')[0].text.strip().split(' - ')[1].replace(',', '/')
             if p.yahoo_pos != position:
-                u = models.Players.update(yahoo_pos=position).where(models.Players.yahoo_id == p.yahoo_id)
-                u.execute()
-
+                p.yahoo_pos = position
+                p.save()
+                print(position)
+                print(p.yahoo_pos, position)
 def main():
     players = models.Players.select().where(
         ~(models.Players.yahoo_id >> None),
